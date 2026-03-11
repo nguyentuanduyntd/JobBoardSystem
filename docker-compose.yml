@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  #Database MySQL
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${jobboard_db}
+      MYSQL_USER: ${root}
+      MYSQL_PASSWORD: ${Tuanduy1805@}
+      MYSQL_ROOT_PASSWORD: Tuanduy1805@
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  #Cache Redis
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+  #Backend Django
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+
+  #Frontend React
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    stdin_open: true #Giúp React không bị tắt ngay khi khởi động qua Docker
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
