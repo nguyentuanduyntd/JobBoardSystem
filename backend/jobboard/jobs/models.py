@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class BaseModel(models.Model):
     active = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -10,15 +11,6 @@ class BaseModel(models.Model):
         ordering = ('-created_date',) #record mới luôn lên đầu
 
 
-class Company(BaseModel):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    location = models.CharField(max_length=100)
-    website = models.URLField(blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
 class JobCategory(BaseModel):
     name = models.CharField(max_length=100)
 
@@ -26,10 +18,10 @@ class JobCategory(BaseModel):
         return self.name
 
 class Skill(BaseModel):
-    name = models.CharField(max_length=100)
+    content = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name
+        return self.content
 
 class Job(BaseModel):
 
@@ -55,7 +47,7 @@ class Job(BaseModel):
     skills = models.ManyToManyField(Skill, related_name='jobs')
 
     company = models.ForeignKey(
-        Company,
+        'companies.Company',
         on_delete=models.CASCADE,
         related_name='jobs',
     )

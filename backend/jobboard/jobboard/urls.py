@@ -35,7 +35,9 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('', include('jobs.urls')),
+    path('', include('companies.urls')),
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', RedirectView.as_view(url='swagger/', permanent=False)),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',
                 schema_view.without_ui(cache_timeout=0),

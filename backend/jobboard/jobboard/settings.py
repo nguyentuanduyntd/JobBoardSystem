@@ -37,6 +37,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media/'
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,9 +55,12 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'django.contrib.staticfiles',
+    'rest_framework',
     'drf_yasg',
     'companies',
-    'applications'
+    'applications',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [

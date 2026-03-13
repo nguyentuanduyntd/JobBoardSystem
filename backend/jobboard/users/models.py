@@ -33,7 +33,7 @@ class CandidateProfile(models.Model):
 
 class EmployerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='employer_profile')
-    company = models.ForeignKey('jobs.Company', on_delete=models.SET_NULL,null=True, related_name='recruiters')
+    company = models.ForeignKey('companies.Company', on_delete=models.SET_NULL,null=True, related_name='recruiters')
     position = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):

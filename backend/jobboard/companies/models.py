@@ -1,3 +1,20 @@
 from django.db import models
 
-# Create your models here.
+class BaseModel(models.Model):
+    active = models.BooleanField(default=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+        ordering = ('-created_date',) #record mới luôn lên đầu
+
+
+class Company(BaseModel):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    location = models.CharField(max_length=100)
+    website = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
