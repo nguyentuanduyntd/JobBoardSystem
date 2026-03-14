@@ -56,12 +56,23 @@ INSTALLED_APPS = [
     'cloudinary',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'drf_yasg',
     'companies',
     'applications',
     'ckeditor',
     'ckeditor_uploader',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,6 +85,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'jobboard.urls'
+
 
 TEMPLATES = [
     {
