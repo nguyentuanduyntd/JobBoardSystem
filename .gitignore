@@ -1,0 +1,29 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Django
+*.log
+media/
+staticfiles/
+
+# Virtual environment
+venv/
+env/
+
+# Database
+*.sqlite3
+
+# IDE
+.idea/
+.vscode/
+
+# Node
+node_modules/

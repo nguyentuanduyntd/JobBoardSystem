@@ -6,15 +6,19 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_DATABASE: ${jobboard_db}
-      MYSQL_USER: ${root}
-      MYSQL_PASSWORD: ${Tuanduy1805@}
+      MYSQL_DATABASE: jobboard_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Tuanduy1805@
       MYSQL_ROOT_PASSWORD: Tuanduy1805@
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
       - "3307:3306"
-
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval : 10s
+      timeout: 5s
+      retries: 5
   #Cache Redis
   redis:
     image: redis:7-alpine
@@ -32,8 +36,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   #Frontend React
   frontend:

@@ -20,8 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
 
         if user.role == User.Role.CANDIDATE:
-            CandidateProfile.objects.create(user=user)
+            CandidateProfile.objects.get_or_create(user=user)
         elif user.role == User.Role.EMPLOYER:
-            EmployerProfile.objects.create(user=user)
+            EmployerProfile.objects.get_or_create(user=user)
 
         return user

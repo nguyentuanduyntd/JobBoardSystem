@@ -22,5 +22,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy toàn bộ code backend vào container
 COPY . /app/
 
+
 # Chạy server Django (có thể dùng gunicorn khi deploy thật)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "jobboard/manage.py", "runserver", "0.0.0.0:8000"]
