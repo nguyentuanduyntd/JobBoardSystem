@@ -6,12 +6,14 @@ class JobCategorySerializer(serializers.ModelSerializer):
         model = JobCategory
         fields = ['id', 'name']
 
-class JobSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Job
-        fields = ['id', 'title', 'location','job_type','category' ,'company', 'skills', 'created_date', ]
-
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = ['id', 'content']
+
+class JobSerializer(serializers.ModelSerializer):
+    company_name = serializers.CharField(source='company.name', read_only=True)
+    class Meta:
+        model = Job
+        fields = ['id', 'title', 'description','location','job_type','salary_min','salary_max','category','company','company_name','skills', 'created_date', ]
+
