@@ -18,7 +18,7 @@ Các công nghệ chính:
 
 ## Architecture Diagram
 
-User -> React Client -> Django REST API -> PostgreSQL
+User -> React Client -> Django REST API -> MySQL
 
 Redis được sử dụng để cache dữ liệu và xử lý các tác vụ bất đồng bộ.
 
