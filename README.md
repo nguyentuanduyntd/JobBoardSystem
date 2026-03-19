@@ -12,7 +12,7 @@
 ## Technology
 
 - Communication: RESTful API
-- Frontend: React
+- Frontend: React + Vite
 - Backend: Django + Django REST Framework
 - Database: MySQL
 - Cache: Redis
