@@ -8,3 +8,4 @@ from .serializers import CompanySerializer
 class CompanyViewSet(viewsets.ViewSet, generics.ListAPIView):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+    permission_classes = [permissions.AllowAny]

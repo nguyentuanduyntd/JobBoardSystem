@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.db.models import Count, Q
 from rest_framework import viewsets, permissions, status, generics, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ class JobCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = JobCategory.objects.all()
     serializer_class = JobCategorySerializer
     permission_classes = [permissions.AllowAny]
+
 
 class JobViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Job.objects.filter(active=True)

@@ -122,9 +122,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'jobboard_db',
         'USER': 'root',
-        'PASSWORD': 'Tuanduy1805@',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '3305',
     }
 }
 # 'default': {

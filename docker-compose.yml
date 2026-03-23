@@ -8,12 +8,12 @@ services:
     environment:
       MYSQL_DATABASE: jobboard_db
       MYSQL_USER: root
-      MYSQL_PASSWORD: Tuanduy1805@
-      MYSQL_ROOT_PASSWORD: Tuanduy1805@
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3305"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval : 10s
