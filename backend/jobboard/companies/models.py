@@ -15,6 +15,7 @@ class Company(BaseModel):
     description = models.TextField()
     location = models.CharField(max_length=100)
     website = models.URLField(blank=True, null=True)
+    logo = models.ImageField( upload_to='jobboard/companies/',blank=True, null=True)
 
     def __str__(self):
         return self.name

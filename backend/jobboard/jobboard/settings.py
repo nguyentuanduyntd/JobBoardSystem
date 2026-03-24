@@ -40,7 +40,7 @@ ALLOWED_HOSTS = []
 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
@@ -91,6 +91,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
+    'http://localhost:5174',
+    'http://127.0.0.1:5174',
 ]
 
 ROOT_URLCONF = 'jobboard.urls'
@@ -123,9 +125,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'jobboard_db',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'Tuanduy1805@',
         'HOST': 'localhost',
-        'PORT': '3305',
+        'PORT': '3306',
     }
 }
 # 'default': {

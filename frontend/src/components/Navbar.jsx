@@ -31,8 +31,8 @@ const Navbar = () => {
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle d-flex align-items-center gap-2"
                   href="#" role="button" data-bs-toggle="dropdown">
-                  {user.avatar
-                    ? <img src={user.avatar} alt="avatar" width="32" height="32"
+                  {user.avatar_url
+                    ? <img src={user.avatar_url} alt="avatar" width="32" height="32"
                         className="rounded-circle object-fit-cover" />
                     : <i className="bi bi-person-circle fs-5"></i>
                   }
@@ -40,6 +40,9 @@ const Navbar = () => {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li><Link className="dropdown-item" to="/profile">Hồ sơ</Link></li>
+                  <li><Link className="dropdown-item" to="/history">
+                    <i className="bi bi-file-text me-2"></i>Lịch sử ứng tuyển
+                  </Link></li>
                   <li><hr className="dropdown-divider" /></li>
                   <li><button className="dropdown-item text-danger" onClick={handleLogout}>Đăng xuất</button></li>
                 </ul>

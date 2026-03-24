@@ -45,3 +45,8 @@ urllib3==2.5.0
 virtualenv==20.35.4
 Werkzeug==3.1.4
 WTForms==3.2.1
+django-cloudinary-storage
+cloudinary
+djangorestframework-simplejwt
+django-redis
+celery

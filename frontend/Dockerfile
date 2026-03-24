@@ -1,5 +1,5 @@
 # Sử dụng Node.js image
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -11,5 +11,5 @@ RUN npm install
 COPY . .
 
 # Build ứng dụng hoặc chạy dev server
-# Đối với bài tập lớn, chạy dev server cho tiện:
-CMD ["npm", "start"]
+
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

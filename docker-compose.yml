@@ -7,15 +7,21 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: jobboard_db
+<<<<<<< Updated upstream
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
+=======
+      MYSQL_USER: jobboard_user
+      MYSQL_PASSWORD: Tuanduy1805@
+      MYSQL_ROOT_PASSWORD: Tuanduy1805@
+>>>>>>> Stashed changes
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
       - "3305"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pTuanduy1805@"]
       interval : 10s
       timeout: 5s
       retries: 5
@@ -48,7 +54,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
+      - "5173:5173"
     stdin_open: true #Giúp React không bị tắt ngay khi khởi động qua Docker
     depends_on:
       - backend
