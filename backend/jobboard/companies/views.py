@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from .models import Company
 from .serializers import CompanySerializer
 
-class CompanyViewSet(viewsets.ViewSet, generics.ListAPIView):
+class CompanyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     permission_classes = [permissions.AllowAny]

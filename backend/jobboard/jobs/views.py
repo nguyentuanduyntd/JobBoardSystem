@@ -21,10 +21,13 @@ class JobViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        query = self.queryset
+        query = super().get_queryset()
         q = self.request.query_params.get('q')
         if q:
             query = query.filter(title__icontains=q)
+        company = self.request.query_params.get('company')
+        if company:
+            query = query.filter(company_id=company)
         return query
 
     def get_permissions(self):

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getJobs, getCompanies, getJobCategories, getSkills } from "../services/jobService";
+import { Link } from 'react-router-dom'
 
 const generateColor = (str) => {
   if (!str) return "#1a73e8";
@@ -15,6 +16,9 @@ export default function Home() {
   const [searchJob, setSearchJob] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
   const [savedJobs, setSavedJobs] = useState(new Set());
+  const [showAllJobs, setShowAllJobs] = useState(false);
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const [showAllCompanies, setShowAllCompanies] = useState(false);
 
   const [featuredJobs, setFeaturedJobs] = useState([]);
   const [topCompanies, setTopCompanies] = useState([]);
@@ -58,10 +62,10 @@ export default function Home() {
 
         const formattedCompanies = Array.isArray(companies) ? companies.map(c => ({
           id: c.id || c.name,
-          name: c.name, 
+          name: c.name,
           letter: c.name ? c.name.charAt(0).toUpperCase() : "C",
-          color: generateColor(c.name || "Company"), 
-          jobs: c.job_count || 0, 
+          color: generateColor(c.name || "Company"),
+          jobs: c.job_count || 0,
           industry: c.industry || "Doanh nghiệp"
         })) : [];
         setTopCompanies(formattedCompanies);
@@ -69,8 +73,8 @@ export default function Home() {
         const defaultIcons = ["💻", "📣", "📊", "🎨", "🤝", "🏢", "🚚", "📚", "🚀", "💡"];
         const formattedCategories = Array.isArray(apiCategories) ? apiCategories.map((cat, idx) => ({
           id: cat.id || cat.name,
-          name: cat.name, 
-          icon: defaultIcons[idx % defaultIcons.length], 
+          name: cat.name,
+          icon: defaultIcons[idx % defaultIcons.length],
           job_count: cat.job_count || 0
         })) : [];
         setCategories(formattedCategories);
@@ -137,10 +141,15 @@ export default function Home() {
       <section style={styles.section}>
         <div style={styles.sectionHeader}>
           <h2 style={styles.sectionTitle}>Khám phá theo lĩnh vực</h2>
-          <a style={styles.seeAll} href="#">Xem tất cả →</a>
+          <button
+            style={{ ...styles.seeAll, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            onClick={() => setShowAllCategories(!showAllCategories)}
+          >
+            {showAllCategories ? "Thu gọn ←" : "Xem tất cả →"}
+          </button>
         </div>
         <div style={styles.categoriesGrid}>
-          {categories.map((cat) => (
+          {(showAllCategories ? categories : categories.slice(0, 4)).map((cat) => (
             <div key={cat.id} style={styles.catCard}>
               <span style={styles.catIcon}>{cat.icon}</span>
               <div style={styles.catName}>{cat.name}</div>
@@ -154,10 +163,15 @@ export default function Home() {
       <section style={{ ...styles.section, background: "#f8faff" }}>
         <div style={styles.sectionHeader}>
           <h2 style={styles.sectionTitle}>Việc làm nổi bật</h2>
-          <a style={styles.seeAll} href="#">Xem tất cả →</a>
+          <button
+            style={{ ...styles.seeAll, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            onClick={() => setShowAllJobs(!showAllJobs)}
+          >
+            {showAllJobs ? "Thu gọn ←" : "Xem tất cả →"}
+          </button>
         </div>
         <div style={styles.jobsGrid}>
-          {featuredJobs.map((job) => (
+          {(showAllJobs ? featuredJobs : featuredJobs.slice(0, 3)).map((job) => (
             <div key={job.id} style={styles.jobCard}>
               <div style={styles.jobCardTop}>
                 <div style={{ ...styles.companyLogo, background: job.logoColor }}>
@@ -188,6 +202,7 @@ export default function Home() {
 
               <div style={styles.jobFooter}>
                 <span style={styles.jobType}>{job.type}</span>
+                <Link to={`/jobs/${job.id}`} style={styles.viewJobBtn}>Xem chi tiết</Link>
                 <button style={styles.applyBtn}>Ứng tuyển</button>
               </div>
             </div>
@@ -199,16 +214,21 @@ export default function Home() {
       <section style={styles.section}>
         <div style={styles.sectionHeader}>
           <h2 style={styles.sectionTitle}>Công ty hàng đầu</h2>
-          <a style={styles.seeAll} href="#">Xem tất cả →</a>
+          <button
+            style={{ ...styles.seeAll, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            onClick={() => setShowAllCompanies(!showAllCompanies)}
+          >
+            {showAllCompanies ? "Thu gọn ←" : "Xem tất cả →"}
+          </button>
         </div>
         <div style={styles.companiesGrid}>
-          {topCompanies.map((c) => (
+          {(showAllCompanies ? topCompanies : topCompanies.slice(0, 3)).map((c) => (
             <div key={c.id} style={styles.companyCard}>
               <div style={{ ...styles.companyCardLogo, background: c.color }}>{c.letter}</div>
               <div style={styles.companyCardName}>{c.name}</div>
               <div style={styles.companyCardIndustry}>{c.industry}</div>
               <div style={styles.companyCardJobs}>{c.jobs} việc làm đang tuyển</div>
-              <button style={styles.viewCompanyBtn}>Xem công ty</button>
+              <Link to={`/companies/${c.id}`} style={styles.viewJobBtn}>Xem công ty</Link>
             </div>
           ))}
         </div>
@@ -370,6 +390,11 @@ const styles = {
   },
   jobFooter: { display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 },
   jobType: { fontSize: 12, color: "#64748b", background: "#f1f5f9", padding: "4px 10px", borderRadius: 6 },
+  viewJobBtn: {
+    padding: "7.5px 16px", borderRadius: 8, border: "1.5px solid #2563eb",
+    color: "#2563eb", fontSize: 13, fontWeight: 700, textDecoration: "none",
+    background: "transparent",
+  },
   applyBtn: {
     padding: "8px 18px", borderRadius: 8, border: "none",
     background: "#2563eb", color: "#fff",

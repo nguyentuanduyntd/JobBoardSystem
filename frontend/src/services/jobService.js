@@ -16,6 +16,11 @@ export const getCompanies = async (params = {}) => {
     return response.json()
 }
 
+export const getCompanyDetail = async (id) => {
+    const response = await fetch(`${API_URL}/companies/${id}/`)
+    return response.json()
+}
+
 export const getJobCategories = async (params = {}) => {
     const query = new URLSearchParams(params).toString()
     const response = await fetch(`${API_URL}/jobcategories/?${query}`)
