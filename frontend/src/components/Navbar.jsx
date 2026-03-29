@@ -25,7 +25,17 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/jobs">Việc làm</Link>
             </li>
+
+            {/* ✅ Chỉ hiện khi là Employer */}
+            {user?.role === 'EMPLOYER' && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/employer/applications">
+                  <i className="bi bi-people me-1"></i>Quản lý ứng tuyển
+                </Link>
+              </li>
+            )}
           </ul>
+
           <ul className="navbar-nav">
             {user ? (
               <li className="nav-item dropdown">
@@ -40,11 +50,31 @@ const Navbar = () => {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li><Link className="dropdown-item" to="/profile">Hồ sơ</Link></li>
-                  <li><Link className="dropdown-item" to="/history">
-                    <i className="bi bi-file-text me-2"></i>Lịch sử ứng tuyển
-                  </Link></li>
+
+                  {/* ✅ Candidate: xem lịch sử ứng tuyển */}
+                  {user.role === 'CANDIDATE' && (
+                    <li>
+                      <Link className="dropdown-item" to="/history">
+                        <i className="bi bi-file-text me-2"></i>Lịch sử ứng tuyển
+                      </Link>
+                    </li>
+                  )}
+
+                  {/* ✅ Employer: quản lý ứng tuyển */}
+                  {user.role === 'EMPLOYER' && (
+                    <li>
+                      <Link className="dropdown-item" to="/employer/applications">
+                        <i className="bi bi-people me-2"></i>Quản lý ứng tuyển
+                      </Link>
+                    </li>
+                  )}
+
                   <li><hr className="dropdown-divider" /></li>
-                  <li><button className="dropdown-item text-danger" onClick={handleLogout}>Đăng xuất</button></li>
+                  <li>
+                    <button className="dropdown-item text-danger" onClick={handleLogout}>
+                      <i className="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                    </button>
+                  </li>
                 </ul>
               </li>
             ) : (

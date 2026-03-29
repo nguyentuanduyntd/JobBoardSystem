@@ -23,7 +23,7 @@ const Apply = () => {
         getJobDetail(id)
             .then(data => setJob(data))
             .finally(() => setLoading(false))
-    }, [id])
+    }, [id, user])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -55,7 +55,7 @@ const Apply = () => {
         }
     }
 
-    if (loading) return <div className="text-center mt-5">Đang tải...</div>
+    if (!user || loading) return <div className="text-center mt-5">Đang tải...</div>
     if (!job) return <div className="text-center mt-5">Không tìm thấy công việc</div>
 
     if (success) return (
@@ -108,7 +108,7 @@ const Apply = () => {
                     <h6 className="fw-bold mb-3">Thông tin ứng viên</h6>
                     <p className="mb-1">
                         <i className="bi bi-person me-2"></i>
-                        {user.first_name} {user.last_name}
+                        {user?.first_name} {user?.last_name}
                     </p>
                     <p className="mb-0">
                         <i className="bi bi-envelope me-2"></i>

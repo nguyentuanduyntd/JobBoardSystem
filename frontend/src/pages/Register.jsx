@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 
 const Register = () => {
@@ -11,9 +11,17 @@ const Register = () => {
         role: 'CANDIDATE',
     })
     const [avatar, setAvatar] = useState(null)
+    const [companies, setCompanies] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:8000/companies/')
+            .then(res => res.json())
+            .then(data => setCompanies(data))
+            .catch(() => setCompanies([]))
+    }, [])
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value})
@@ -25,7 +33,11 @@ const Register = () => {
         setError('')
 
         const data = new FormData()
-        Object.keys(formData).forEach(key => data.append(key, formData[key]))
+        Object.keys(formData).forEach(key => {
+            if(key === 'company' && formData.role !== 'EMPLOYER') return
+            data.append(key, formData[key])
+
+        })
         if (avatar) data.append('avatar', avatar)
 
         try {
@@ -89,6 +101,19 @@ const Register = () => {
                         <option value="EMPLOYER">Nhà tuyển dụng</option>
                       </select>
                     </div>
+
+                    {formData.role === 'EMPLOYER' && (
+                        <div className="mb-3">
+                            <label className="form-label">Công ty</label>
+                            <select name="company" className="form-select"
+                            value={formData.company} onChange={handleChange} required>
+                            <option value="">-- Chọn công ty --</option>
+                            {companies.map(c => (
+                            <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                            </select>
+                        </div>
+                    )}
                     <div className="mb-3">
                       <label className="form-label">Avatar</label>
                       <input type="file" className="form-control" accept="image/*"
