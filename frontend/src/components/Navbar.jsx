@@ -28,11 +28,18 @@ const Navbar = () => {
 
             {/* ✅ Chỉ hiện khi là Employer */}
             {user?.role === 'EMPLOYER' && (
-              <li className="nav-item">
-                <Link className="nav-link" to="/employer/applications">
-                  <i className="bi bi-people me-1"></i>Quản lý ứng tuyển
-                </Link>
-              </li>
+              <>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/employer/applications">
+                        <i className="bi bi-people me-1"></i>Quản lý ứng tuyển
+                    </Link>
+                </li>
+                <li>
+                    <Link className="nav-link" to="/employer/jobs/post">
+                        <i className="bi bi-people me-1"></i>Đăng tin tuyển dụng
+                    </Link>
+                </li>
+              </>
             )}
           </ul>
 

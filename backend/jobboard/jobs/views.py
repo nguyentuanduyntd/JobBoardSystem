@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import JobCategory, Job, Skill
 from .paginators import MyPaginator
-from .serializers import JobCategorySerializer, JobSerializer, SkillSerializer
+from .serializers import JobCategorySerializer, JobSerializer, SkillSerializer, EmployerJobSerializer
 
 
 class JobCategoryViewSet(viewsets.ReadOnlyModelViewSet):
@@ -38,3 +38,19 @@ class JobViewSet(viewsets.ReadOnlyModelViewSet):
 class SkillViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
+    permission_classes = [permissions.AllowAny]
+
+class EmployerJobViewSet(viewsets.ModelViewSet):
+    serializer_class = EmployerJobSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            company = user.employer_profile.company
+            return Job.objects.filter(company=company).order_by('-created_date')
+        except Exception:
+            return Job.objects.none()
+
+    def get_permissions(self):
+        return [permissions.IsAuthenticated()]

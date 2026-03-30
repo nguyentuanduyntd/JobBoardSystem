@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -96,6 +96,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 ROOT_URLCONF = 'jobboard.urls'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),   # ← đổi số này, mặc định 5 phút
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),       # ← refresh token sống 7 ngày
+}
 
 
 TEMPLATES = [

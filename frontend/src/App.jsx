@@ -10,6 +10,7 @@ import JobDetail from './pages/JobDetail'
 import CompanyDetail from './pages/CompanyDetail'
 import Navbar from './components/Navbar'
 import ScrollToTop from './pages/ScrollToTopButton'
+import EmployerPostJob from './pages/EmployerPostJob'
 import EmployerDashboard from './pages/EmployerDashboard'
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/companies/:id" element={<CompanyDetail/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/history" element={<History/>} />
+        <Route path="/employer/jobs/post" element={<EmployerPostJob/>} />
         <Route path="employer/applications" element={<EmployerDashboard />} />
       </Routes>
     </BrowserRouter>

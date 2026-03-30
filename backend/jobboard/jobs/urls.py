@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register('jobcategories', views.JobCategoryViewSet, basename='jobcategory')
 router.register('jobs', views.JobViewSet, basename='job')
 router.register('skills', views.SkillViewSet, basename='skill')
+router.register('employer/jobs', views.EmployerJobViewSet, basename='employer-job')
 
 urlpatterns = [
     path('', include(router.urls)),
