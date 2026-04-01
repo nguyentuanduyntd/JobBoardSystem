@@ -50,3 +50,4 @@ cloudinary
 djangorestframework-simplejwt
 django-redis
 celery
+django-ckeditor
