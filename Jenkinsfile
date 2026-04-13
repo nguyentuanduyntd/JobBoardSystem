@@ -9,7 +9,7 @@ pipeline {
     triggers {
         pollSCM('H/3 * * * *')
     }
-
+    //Helloworld
     environment {
         PYTHON_EXE = 'C:\\Users\\LENOVO\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
     }
