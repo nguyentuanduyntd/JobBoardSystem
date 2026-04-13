@@ -6,6 +6,10 @@ pipeline {
         timestamps()
     }
 
+    environment {
+        PYTHON_EXE = 'C:\\Users\\LENOVO\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -32,7 +36,7 @@ pipeline {
         stage('Backend - Python version') {
             steps {
                 dir('backend') {
-                    bat 'py --version'
+                    bat '"%PYTHON_EXE%" --version'
                 }
             }
         }
@@ -40,7 +44,7 @@ pipeline {
         stage('Backend - Install requirements') {
             steps {
                 dir('backend') {
-                    bat 'py -m pip install -r requirements.txt'
+                    bat '"%PYTHON_EXE%" -m pip install -r requirements.txt'
                 }
             }
         }
@@ -48,7 +52,7 @@ pipeline {
         stage('Backend - Django check') {
             steps {
                 dir('backend') {
-                    bat 'py manage.py check'
+                    bat '"%PYTHON_EXE%" manage.py check'
                 }
             }
         }
