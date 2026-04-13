@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     options {
-        timeout(time: 30, unit: 'MINUTES')
+        timeout(time: 45, unit: 'MINUTES')
         timestamps()
     }
 
@@ -13,7 +13,7 @@ pipeline {
             }
         }
 
-        stage('Install dependencies') {
+        stage('Frontend - Install dependencies') {
             steps {
                 dir('frontend') {
                     bat 'npm ci'
@@ -21,10 +21,34 @@ pipeline {
             }
         }
 
-        stage('Build frontend') {
+        stage('Frontend - Build') {
             steps {
                 dir('frontend') {
                     bat 'npm run build'
+                }
+            }
+        }
+
+        stage('Backend - Python version') {
+            steps {
+                dir('backend') {
+                    bat 'python --version'
+                }
+            }
+        }
+
+        stage('Backend - Install requirements') {
+            steps {
+                dir('backend') {
+                    bat 'pip install -r requirements.txt'
+                }
+            }
+        }
+
+        stage('Backend - Django check') {
+            steps {
+                dir('backend') {
+                    bat 'python manage.py check'
                 }
             }
         }
@@ -32,7 +56,7 @@ pipeline {
 
     post {
         success {
-            echo 'Build frontend thành công'
+            echo 'Build frontend và kiểm tra backend thành công'
             archiveArtifacts artifacts: 'frontend/dist/**/*', fingerprint: true, allowEmptyArchive: false
         }
         failure {
