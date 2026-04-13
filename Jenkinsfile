@@ -56,6 +56,27 @@ pipeline {
                 }
             }
         }
+
+        stage('Backend - Run tests'){
+            steps{
+                dir('backend\\jobboard'){
+                    bat '"%PYTHON_EXE%" manage.py test'
+                }
+            }
+        }
+        stage('Backend - Check migrations'){
+            steps{
+                dir('backend\\jobboard'){
+                    bat '"%PYTHON_EXE%" manage.py makemigrations --check --dry-run'
+                }
+            }
+        }
+        // stage('Docker - Build'){
+        //     steps{
+        //         bat 'docker compose build'
+        //     }
+        // }
+
     }
 
     post {
