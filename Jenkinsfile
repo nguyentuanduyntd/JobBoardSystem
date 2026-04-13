@@ -32,7 +32,7 @@ pipeline {
         stage('Backend - Python version') {
             steps {
                 dir('backend') {
-                    bat 'python --version'
+                    bat 'py --version'
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
         stage('Backend - Install requirements') {
             steps {
                 dir('backend') {
-                    bat 'pip install -r requirements.txt'
+                    bat 'py -m pip install -r requirements.txt'
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline {
         stage('Backend - Django check') {
             steps {
                 dir('backend') {
-                    bat 'python manage.py check'
+                    bat 'py manage.py check'
                 }
             }
         }
