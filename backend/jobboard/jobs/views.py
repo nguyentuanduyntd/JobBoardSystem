@@ -43,7 +43,7 @@ class SkillViewSet(viewsets.ReadOnlyModelViewSet):
 class EmployerJobViewSet(viewsets.ModelViewSet):
     serializer_class = EmployerJobSerializer
     permission_classes = [permissions.IsAuthenticated]
-
+    pagination_class = MyPaginator
     def get_queryset(self):
         user = self.request.user
         try:
@@ -54,3 +54,11 @@ class EmployerJobViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         return [permissions.IsAuthenticated()]
+
+    def destroy(self, request, *args, **kwargs):
+        job = self.get_object()
+        job.delete()
+        return Response(
+            {'message': 'Xóa job thành công'},
+            status = status.HTTP_204_NO_CONTENT
+        )

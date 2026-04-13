@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-
+import { Link } from 'react-router-dom'
 const API_URL = 'http://127.0.0.1:8000'
 
 const getLocalDateTimeMin = () => {
@@ -356,6 +356,9 @@ export default function EmployerDashboard() {
           <h1 style={styles.pageTitle}>Quản lý ứng tuyển</h1>
           <p style={styles.pageSub}>{applications.length} đơn ứng tuyển tổng cộng</p>
         </div>
+        <Link to="/employer/jobs" style={styles.manageJobsLink}>
+            Quản lý job đã đăng
+        </Link>
       </div>
 
       <div style={styles.statsRow}>
@@ -575,6 +578,17 @@ const styles = {
     fontSize: 15,
     color: '#0f172a',
   },
+    manageJobsLink: {
+      textDecoration: 'none',
+      background: '#0f172a',
+      color: '#fff',
+      padding: '10px 16px',
+      borderRadius: 10,
+      fontSize: 14,
+      fontWeight: 700,
+      display: 'inline-flex',
+      alignItems: 'center',
+    },
   candidateEmail: {
     margin: 0,
     fontSize: 12,

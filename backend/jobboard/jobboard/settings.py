@@ -128,21 +128,14 @@ WSGI_APPLICATION = 'jobboard.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jobboard_db',
-        'USER': 'root',
-        'PASSWORD': 'Tuanduy1805@',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQL_DATABASE'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': os.getenv('DB_PORT', '3306'),
     }
 }
-# 'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.getenv('MYSQL_DATABASE'),
-#         'USER': os.getenv('MYSQL_USER'),
-#         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-#         'HOST': os.getenv('DB_HOST', 'localhost'),
-#         'PORT': os.getenv('DB_PORT', '3306'),
-#     }
+
 
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
