@@ -17,7 +17,8 @@
 - Database: MySQL
 - Cache: Redis
 - Container: Docker
-
+-Jenkinsfile
+-RabbitMQ
 ## Cấu trúc dự án
 
 - System Architecture: Client - Server Architecture
