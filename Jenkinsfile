@@ -51,7 +51,7 @@ pipeline {
 
         stage('Backend - Django check') {
             steps {
-                dir('backend') {
+                dir('backend\\jobboard') {
                     bat '"%PYTHON_EXE%" manage.py check'
                 }
             }
