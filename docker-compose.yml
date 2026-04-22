@@ -53,5 +53,68 @@ services:
     depends_on:
       - backend
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: jobboard_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq_data
+    healthcheck:
+      test: ["CMD","rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    
+  #Xử lý async tasks
+  celery_worker:
+    build: ./backend
+    working_dir: /app/jobboard 
+    command: celery -A jobboard worker --loglevel=info --queues=default,emails,notifications
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      db: 
+        condition: service_healthy
+      rabbitmq: 
+        condition: service_healthy
+  
+  #Celery beat - scheduled tasks
+  celery_beat:
+    build: ./backend
+    command: celery -A jobboard beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+  
+  flower:
+    image: mher/flower:2.0.0
+    command: celery flower --broker=amqp://guest:guest@rabbitmq:5672/ --port=5555
+    ports:
+      - "5555:5555"
+    env_file:
+    - .env
+    restart: always
+    depends_on:
+      - rabbitmq
+      - celery_worker
+    
+
 volumes:
   mysql_data:
+  rabbitmq_data:

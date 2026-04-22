@@ -1,6 +1,12 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from .models import Application
+from .tasks import (
+    notify_new_application,
+    notify_employer_new_application,
+    notify_candidate_status_changed,
+    send_interview_schedule,
+)
 from .serializers import (
     ApplyJobSerializer,
     ApplicationSerializer,
@@ -16,7 +22,25 @@ class ApplyJobView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        application = serializer.save()
+
+        # Task 1 — Xác nhận cho candidate
+        notify_new_application.apply_async(
+            kwargs={
+                'candidate_name':  application.candidate.username,
+                'candidate_email': application.candidate.email,
+                'job_title':       application.job.title,
+                'company_name':    application.job.company.name,
+            },
+            queue='emails'
+        )
+
+        # Task 2 — Thông báo cho employer
+        notify_employer_new_application.apply_async(
+            args=[application.id],
+            queue='emails'
+        )
+
         return Response(
             {'message': 'Ứng tuyển thành công'},
             status=status.HTTP_201_CREATED
@@ -36,9 +60,8 @@ class EmployerApplicationListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
         return Application.objects.filter(
-            job__company__recruiters__user=user
+            job__company__recruiters__user=self.request.user
         ).select_related('candidate', 'job', 'job__company').distinct()
 
 
@@ -65,13 +88,30 @@ class EmployerApplicationUpdateView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         instance = self.get_object()
+        old_status = instance.status                    # Lưu status cũ
+        old_interview_date = instance.interview_date    # Lưu interview_date cũ
+
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        application = serializer.save()
+
+        # Task 3 — Gửi email nếu status thay đổi
+        if application.status != old_status:
+            notify_candidate_status_changed.apply_async(
+                args=[application.id],
+                queue='emails'
+            )
+
+        # Task 4 — Gửi email nếu lịch phỏng vấn được set mới
+        if application.interview_date and application.interview_date != old_interview_date:
+            send_interview_schedule.apply_async(
+                args=[application.id],
+                queue='emails'
+            )
 
         return Response({
             'message': 'Cập nhật thành công',
-            'data': ApplicationDetailSerializer(instance).data
+            'data': ApplicationDetailSerializer(application).data
         })
 
 
