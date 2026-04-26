@@ -8,17 +8,17 @@ services:
     environment:
       MYSQL_DATABASE: jobboard_db
       MYSQL_USER: jobboard_user
-      MYSQL_PASSWORD: Tuanduy1805@
-      MYSQL_ROOT_PASSWORD: Tuanduy1805@
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3305:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pTuanduy1805@"]
-      interval : 10s
-      timeout: 5s
-      retries: 5
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
   #Cache Redis
   redis:
     image: redis:7-alpine
@@ -72,6 +72,7 @@ services:
       retries: 5
     
   #Xử lý async tasks
+# Xử lý async tasks
   celery_worker:
     build: ./backend
     working_dir: /app/jobboard 
@@ -86,10 +87,11 @@ services:
         condition: service_healthy
       rabbitmq: 
         condition: service_healthy
-  
-  #Celery beat - scheduled tasks
+
+  # Celery beat - scheduled tasks
   celery_beat:
     build: ./backend
+    working_dir: /app/jobboard
     command: celery -A jobboard beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     volumes:
       - ./backend:/app
