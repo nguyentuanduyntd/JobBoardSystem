@@ -13,7 +13,7 @@ import ScrollToTop from './pages/ScrollToTopButton'
 import EmployerPostJob from './pages/EmployerPostJob'
 import EmployerDashboard from './pages/EmployerDashboard'
 import EmployerJobs from './pages/EmployerJobs'
-
+import EmployerEditJob from './pages/EmployerEditJob'
 function App() {
   return (
     <BrowserRouter>
@@ -32,6 +32,7 @@ function App() {
         <Route path="/employer/jobs/post" element={<EmployerPostJob/>} />
         <Route path="employer/applications" element={<EmployerDashboard />} />
         <Route path="/employer/jobs" element={<EmployerJobs />} />
+        <Route path="/employer/jobs/:jobId/edit" element={<EmployerEditJob />} />
       </Routes>
     </BrowserRouter>
   )

@@ -45,11 +45,22 @@ const Register = () => {
                 method: 'POST',
                 body: data,
             })
+            
             const result = await response.json()
+            console.log(response)
             if (response.ok) {
                 navigate('/login')
             } else {
-                setError(JSON.stringify(result))
+               if (!response.ok) {
+    console.log("RAW ERROR:", result)
+
+    // lấy message đầu tiên
+    const errorMsg = Object.values(result)[0]?.[0]
+
+    setError(errorMsg || "Đăng ký thất bại")
+}
+    
+
             }
         } catch (err) {
             setError('Lỗi kết nối server')

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const EmployerJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("access_token");
 
@@ -54,6 +56,10 @@ const EmployerJobs = () => {
     }
   };
 
+  const handleEdit = (jobId) => {
+    navigate(`/employer/jobs/${jobId}/edit`);
+  };
+
   useEffect(() => {
     fetchEmployerJobs();
   }, []);
@@ -86,19 +92,35 @@ const EmployerJobs = () => {
               <p><strong>Lương:</strong> {job.salary_min} - {job.salary_max}</p>
               <p><strong>Mô tả:</strong> {job.description}</p>
 
-              <button
-                onClick={() => handleDelete(job.id)}
-                style={{
-                  backgroundColor: "red",
-                  color: "white",
-                  border: "none",
-                  padding: "10px 16px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                }}
-              >
-                Xóa
-              </button>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  onClick={() => handleEdit(job.id)}
+                  style={{
+                    backgroundColor: "#007bff",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 16px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Cập nhật
+                </button>
+
+                <button
+                  onClick={() => handleDelete(job.id)}
+                  style={{
+                    backgroundColor: "red",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 16px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Xóa
+                </button>
+              </div>
             </div>
           ))}
         </div>
